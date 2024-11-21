@@ -3,5 +3,6 @@ import jwt from "jsonwebtoken";
 
 export const generateToken = (uuid) => {
   const { secretKey, expiresIn } = Env;
-  return `Bearer ${jwt.sign({ uuid }, secretKey || "express", { expiresIn })}`;
+  return `Bearer ${jwt.sign({ id:uuid }, secretKey || "express", { expiresIn })}`;
+  
 };

@@ -9,10 +9,10 @@ const registerHandler = async (req, res) => {
   const isEmailExist = await userService.getOneUser({email})
 
 if (isEmailExist) {
-  res.status(httpStatus.BAD_REQUEST).json({ message:'User with email address already exist' });
+  res.status(httpStatus.BAD_REQUEST).json({ message:'User with email address already exist',status:false });
 }
 if (isUsernameExist) {
-  res.status(httpStatus.BAD_REQUEST).json({ message:'User with username already exist' });
+  res.status(httpStatus.BAD_REQUEST).json({ message:'User with username already exist',status:false  });
 }
   const hashPassword = await encryptPassword(password);
   const user = await userService.createUser({
@@ -20,7 +20,7 @@ if (isUsernameExist) {
     email,
     password: hashPassword,
   });
-  res.json({ user }).status(httpStatus.CREATED);
+  res.json({ data:user,status:true,message:'User created successfully' }).status(httpStatus.CREATED);
 };
 
 export const registerController = errorHandlerWrapper(registerHandler);

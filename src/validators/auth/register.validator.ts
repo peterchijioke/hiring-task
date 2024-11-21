@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 
-export const registerValidator = [
+export const registerValidator = ()=>[
     body("username").notEmpty().withMessage("Name is required."),
     body("email")
       .notEmpty()

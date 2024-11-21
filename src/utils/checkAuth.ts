@@ -10,10 +10,10 @@ export const checkAuth = async (req, _res, next: NextFunction) => {
     const token = req.header("Authorization").replace("Bearer ", "");
     const { secretKey } = Env;
     const { id } = jwt.verify(token, secretKey) as PayloadType;
-    const user = await userService.getOneUser({ id });
+    const user = await userService.getOneUser({ uuid:id });
     req.user = { ...user };
     next();
-  } catch {
+  } catch (e){
     next(new UnauthorizedError("Token is invalid"));
   }
 };

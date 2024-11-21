@@ -6,7 +6,7 @@ export const authRouter:Router = Router();
 
 authRouter.post(
   "/register",
-  AuthValidator.registerValidator,
+  AuthValidator.registerValidator(),
   AuthController.registerController
 );
 authRouter.post(
