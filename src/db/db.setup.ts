@@ -3,7 +3,7 @@ import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 import { UserEntity } from "../entities";
 import { Env } from "../env";
 
-export const AppDataSouce = new DataSource({
+export const AppDataSource = new DataSource({
   type: "mysql",
   database: Env.dbName,
   host: Env.host,

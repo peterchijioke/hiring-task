@@ -1,5 +1,4 @@
 import "dotenv/config";
-
 export const Env = {
   host: process.env.DB_HOST,
   username: process.env.DB_USERNAME,

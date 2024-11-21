@@ -9,7 +9,6 @@ export const errorHandlerMiddleware = (
   _next: NextFunction
 ) => {
   Logger.error(JSON.stringify(error));
-
   if (error instanceof CustomError) {
     if(error instanceof ArgumentValidationError) {
       res.status(error.errorCode).json({
@@ -21,6 +20,5 @@ export const errorHandlerMiddleware = (
       message: error.message,
     });
   }
-
-  return;
+  return; 
 };
