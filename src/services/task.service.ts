@@ -27,14 +27,13 @@ export const createTask = async (data: {
 export const getOneTask = async (data: { uuid: string }) => {
   const taskRepository = AppDataSource.getRepository(TaskEntity);
   const task = await taskRepository.findOne({
-    where: { uuid: data.uuid },
+    where: data,
     relations: ["creator"], 
   });
 
   if (!task) {
   return null
   }
-
   return task;
 };
 
@@ -42,12 +41,12 @@ export const getOneTask = async (data: { uuid: string }) => {
 export const getTasks = async (
   userId: string,
   page: number,
-  pageSize: number
+  limit: number
 ) => {
   const taskRepository = AppDataSource.getRepository(TaskEntity);
 
-  const skip = (page - 1) * pageSize;
-  const take = pageSize;
+  const skip = (page - 1) * limit;
+  const take = limit;
 
   const [tasks, total] = await taskRepository.findAndCount({
     where: { creator: { uuid: userId } }, 
@@ -61,8 +60,11 @@ export const getTasks = async (
 
   return {
     data:tasks,
+    pagination:{
     total,
-    totalPages: Math.ceil(total / pageSize),
+    totalPages: Math.ceil(total / limit),
     currentPage: page,
+    }
+    
   };
 };

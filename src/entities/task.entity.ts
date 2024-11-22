@@ -8,6 +8,12 @@ import {
 import { CoreEntity } from "./core.entity";
 import { UserEntity } from "./user.entity";
 
+export enum TaskStatus {
+  Pending = "Pending",
+  InProgress = "In Progress",
+  Completed = "Completed",
+}
+
 @Entity("task")
 export class TaskEntity extends CoreEntity {
   @PrimaryGeneratedColumn("uuid")
@@ -21,6 +27,13 @@ export class TaskEntity extends CoreEntity {
 
   @Column({ type: "timestamp", nullable: true })
   dueDate: Date;
+
+  @Column({
+    type: "enum",
+    enum: TaskStatus,
+    default: TaskStatus.Pending, 
+  })
+  status: TaskStatus;
 
   @ManyToOne(() => UserEntity, (user) => user.tasks)
   @JoinColumn({ name: "creator_id" })
