@@ -19,6 +19,7 @@ taskRouter.get(
 taskRouter.patch(
   "/:id",
   checkAuth,
+  TaskValidator.taskUpdateValidator,
   TaskController.updateController
 );
 taskRouter.delete(

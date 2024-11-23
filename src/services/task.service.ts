@@ -1,5 +1,5 @@
 import { AppDataSource } from "../db";
-import { TaskEntity } from "../entities/task.entity";
+import { TaskEntity, TaskStatus } from "../entities/task.entity";
 import { getOneUser } from "./user.service";
 
 export const createTask = async (data: {
@@ -25,22 +25,26 @@ export const createTask = async (data: {
 
 
 export const updateTask = async (data: {
-  id: string;
+  id: string; // Ensure ID is always required
+} & Partial<{
   title: string;
-  description?: string;
-  dueDate: Date | string;
-}) => {
-  const { id, title, description, dueDate } = data;
+  description: string;
+  dueDate: string | Date;
+  status: TaskStatus;
+}>) => {
+  const { id, ...fieldsToUpdate } = data;
+
+  if (!id) {
+    throw new Error("Task ID is required");
+  }
+
   const taskRepository = AppDataSource.getRepository(TaskEntity);
-  const dueDateFormatted = typeof dueDate === "string" ? new Date(dueDate) : dueDate;
-  const taskToUpdate = await taskRepository.findOneBy({ uuid: id });
-  Object.assign(taskToUpdate, {
-    title,
-    description,
-    dueDate: dueDateFormatted,
-  });
-  const updatedTask = await taskRepository.save(taskToUpdate);
-  return updatedTask;
+
+  // Update only the provided fields
+  await taskRepository.update(id, fieldsToUpdate);
+
+  // Return the updated task
+  return await taskRepository.findOneBy({ uuid: id });
 };
 
 
