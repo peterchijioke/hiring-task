@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { AuthValidator, TaskValidator } from "../validators";
-import { AuthController, TaskController } from "../controllers";
+import {  TaskValidator } from "../validators";
+import { TaskController } from "../controllers";
 import { checkAuth } from "../utils";
 
 export const taskRouter:Router = Router();
@@ -15,4 +15,14 @@ taskRouter.get(
   "/",
   checkAuth,
   TaskController.getController
+);
+taskRouter.patch(
+  "/:id",
+  checkAuth,
+  TaskController.updateController
+);
+taskRouter.delete(
+  "/:id",
+  checkAuth,
+  TaskController.deleteController
 );

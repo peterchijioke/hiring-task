@@ -11,7 +11,7 @@ const createHandler = async (req, res) => {
 const task = await createTask({
   title,
   description,
-  dueDate: new Date(),
+  dueDate: new Date(dueDate),
   creatorId: user?.uuid
 })
 if (task) {

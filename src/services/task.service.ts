@@ -24,16 +24,37 @@ export const createTask = async (data: {
 };
 
 
-export const getOneTask = async (data: { uuid: string }) => {
+export const updateTask = async (data: {
+  id: string;
+  title: string;
+  description?: string;
+  dueDate: Date | string;
+}) => {
+  const { id, title, description, dueDate } = data;
+  const taskRepository = AppDataSource.getRepository(TaskEntity);
+  const dueDateFormatted = typeof dueDate === "string" ? new Date(dueDate) : dueDate;
+  const taskToUpdate = await taskRepository.findOneBy({ uuid: id });
+  Object.assign(taskToUpdate, {
+    title,
+    description,
+    dueDate: dueDateFormatted,
+  });
+  const updatedTask = await taskRepository.save(taskToUpdate);
+  return updatedTask;
+};
+
+
+export const getTask = async (data: { uuid: string }) => {
   const taskRepository = AppDataSource.getRepository(TaskEntity);
   const task = await taskRepository.findOne({
     where: data,
     relations: ["creator"], 
   });
-
-  if (!task) {
-  return null
-  }
+  return task;
+};
+export const deleteTask = async (data: { uuid: string }) => {
+  const taskRepository = AppDataSource.getRepository(TaskEntity);
+  const task = await taskRepository.delete(data);
   return task;
 };
 
